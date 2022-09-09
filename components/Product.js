@@ -1,12 +1,16 @@
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
+
 function Product({ product }) {
-  const { title, price, image } = product.attributes;
+  const { title, price, image, slug } = product.attributes;
   return (
     <ProductStyle>
-      <div>
-        <img src={image.data.attributes.formats.small.url} alt="" />
-      </div>
+      <Link href={`/products/${slug}`}>
+        <div>
+          <img src={image.data.attributes.formats.small.url} alt="" />
+        </div>
+      </Link>
       <h2>{title}</h2>
       <h3>{price}</h3>
     </ProductStyle>

@@ -4,7 +4,13 @@ import { useQuery } from "urql";
 import { GET_PRODUCT_QUERY } from "../../lib/query";
 import styled from "styled-components";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import { useStateContext } from "../../lib/context";
+
 function ProductDetails() {
+  // use State
+  const { qty, increaseQty, decreaseQty, onAdd } = useStateContext();
+
+  // fetch slug
   const { query } = useRouter();
 
   // fetching data
@@ -17,6 +23,7 @@ function ProductDetails() {
   if (fetching) return <p>Loading..</p>;
   if (error) return <p>error it is</p>;
   const { title, description, image } = data.products.data[0].attributes;
+  console.log("this is product", data.products.data[0]);
   return (
     <DetailsStyle>
       <img src={image.data.attributes.formats.medium.url} alt={title} />
@@ -26,14 +33,20 @@ function ProductDetails() {
         <Quantity>
           <span>Quatity</span>
           <button>
-            <AiFillMinusCircle />
+            <AiFillMinusCircle onClick={decreaseQty} />
           </button>
-          <p>0</p>
+          <p>{qty}</p>
           <button>
-            <AiFillPlusCircle />
+            <AiFillPlusCircle onClick={increaseQty} />
           </button>
         </Quantity>
-        <Buy>Add to Cart</Buy>
+        <Buy
+          onClick={() => {
+            onAdd(data.products.data[0], qty);
+          }}
+        >
+          Add to Cart
+        </Buy>
       </ProductInfo>
     </DetailsStyle>
   );
@@ -44,12 +57,13 @@ export default ProductDetails;
 const DetailsStyle = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 5rem;
+  margin-top: 2rem;
   img {
     width: 40%;
   }
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    margin-top: 1rem;
     img {
       width: 100%;
     }
@@ -57,6 +71,9 @@ const DetailsStyle = styled.div`
 `;
 const ProductInfo = styled.div`
   width: 40%;
+  h3 {
+    margin: 0.5rem 0rem;
+  }
   button {
     font-size: 1rem;
     font-weight: medium;

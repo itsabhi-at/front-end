@@ -2,8 +2,10 @@ import Head from "next/head";
 import React from "react";
 import styled from "styled-components";
 import { useQuery } from "urql";
+import Nav from "../components/Nav";
 import Product from "../components/Product";
 import { PRODUCT_QUERY } from "../lib/query";
+
 export default function Home() {
   //fetch from strapi
   const [results] = useQuery({
@@ -26,7 +28,6 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1>Hello Next</h1>
         <Gallery>
           {products.map((product, index) => (
             <Product product={product} key={product.attributes.slug} />
