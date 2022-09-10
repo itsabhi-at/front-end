@@ -4,7 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 
 export default function Cart() {
-  const { cartItems, setShowCart } = useStateContext();
+  const { cartItems, setShowCart, onAdd, onRemove } = useStateContext();
   return (
     <CartWrapper onClick={() => setShowCart(false)}>
       <CartStyle onClick={(e) => e.stopPropagation()}>
@@ -16,9 +16,8 @@ export default function Cart() {
         )}
         {cartItems.length >= 1 &&
           cartItems.map((item) => {
-            console.log("item here");
             return (
-              <Card>
+              <Card key={item.attributes.slug}>
                 <img
                   src={
                     item.attributes.image.data.attributes.formats.thumbnail.url
@@ -31,10 +30,17 @@ export default function Cart() {
                   <Quantity>
                     <span>Quantity</span>
                     <button>
-                      <AiFillMinusCircle />
+                      <AiFillMinusCircle onClick={() => onRemove(item)} />
                     </button>
                     <p>{item.quantity}</p>
-                    <button>
+
+                    <button
+                      onClick={() => {
+                        let quantity = item.quantity;
+                        quantity++;
+                        onAdd(item, quantity++);
+                      }}
+                    >
                       <AiFillPlusCircle />
                     </button>
                   </Quantity>
@@ -89,6 +95,7 @@ const EmptyStyle = styled.div`
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -103,4 +110,24 @@ const EmptyStyle = styled.div`
     color: var(--secondary);
   }
 `;
-const Quantity = styled.div``;
+const Quantity = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 1rem 0rem;
+  button {
+    background: transparent;
+    border: none;
+    display: flex;
+    font-size: 1.5rem;
+  }
+  p {
+    width: 1rem;
+    text-align: center;
+  }
+  span {
+    color: var(--secondary);
+  }
+  svg {
+    color: #494949;
+  }
+`;

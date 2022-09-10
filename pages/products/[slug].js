@@ -23,7 +23,7 @@ function ProductDetails() {
   if (fetching) return <p>Loading..</p>;
   if (error) return <p>error it is</p>;
   const { title, description, image } = data.products.data[0].attributes;
-  console.log("this is product", data.products.data[0]);
+
   return (
     <DetailsStyle>
       <img src={image.data.attributes.formats.medium.url} alt={title} />

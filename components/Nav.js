@@ -6,7 +6,7 @@ import Cart from "./Cart";
 import { useStateContext } from "../lib/context";
 
 function Nav() {
-  const { showCart, setShowCart } = useStateContext();
+  const { showCart, setShowCart, qty } = useStateContext();
   return (
     <NavStyles>
       <Link href={"/"}>Styled.</Link>
