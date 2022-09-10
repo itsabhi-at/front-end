@@ -22,7 +22,7 @@ function ProductDetails() {
 
   if (fetching) return <p>Loading..</p>;
   if (error) return <p>error it is</p>;
-  const { title, description, image } = data.products.data[0].attributes;
+  const { title, description, image, price } = data.products.data[0].attributes;
 
   return (
     <DetailsStyle>
@@ -30,6 +30,7 @@ function ProductDetails() {
       <ProductInfo>
         <h3>{title}</h3>
         <p>{description}</p>
+        <h3>₹{price}</h3>
         <Quantity>
           <span>Quatity</span>
           <button>
