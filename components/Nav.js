@@ -4,7 +4,7 @@ import { FiShoppingBag } from "react-icons/fi";
 import styled from "styled-components";
 import Cart from "./Cart";
 import { useStateContext } from "../lib/context";
-
+const { AnimatePresence, motion } = require("framer-motion");
 function Nav() {
   const { showCart, setShowCart, qty, totalQuantities } = useStateContext();
   return (
@@ -12,12 +12,16 @@ function Nav() {
       <Link href={"/"}>Styled.</Link>
       <NavItems>
         <div onClick={() => setShowCart(true)}>
-          {totalQuantities > 0 && <span>{totalQuantities}</span>}
+          {totalQuantities > 0 && (
+            <motion.span animate={{ scale: 1 }} initial={{ scale: 0 }}>
+              {totalQuantities}
+            </motion.span>
+          )}
           <FiShoppingBag />
           <h3>Cart</h3>
         </div>
       </NavItems>
-      {showCart && <Cart />}
+      <AnimatePresence>{showCart && <Cart />}</AnimatePresence>
     </NavStyles>
   );
 }
