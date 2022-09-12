@@ -1,12 +1,18 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
+import { useStateContext } from "../lib/context";
 
 function Product({ product }) {
+  const { setQty } = useStateContext();
   const { title, price, image, slug } = product.attributes;
+
+  const changeQty = () => {
+    setQty(1);
+  };
   return (
     <ProductStyle>
-      <Link href={`/products/${slug}`}>
+      <Link onClick={changeQty()} href={`/products/${slug}`}>
         <div>
           <img src={image.data.attributes.formats.small.url} alt="" />
         </div>
