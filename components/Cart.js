@@ -2,10 +2,24 @@ import { useStateContext } from "../lib/context";
 import styled from "styled-components";
 import { FaShoppingCart } from "react-icons/fa";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import getStripe from "../lib/getStripe";
 const { motion } = require("framer-motion");
+
 export default function Cart() {
   const { cartItems, setShowCart, onAdd, onRemove, totalPrice } =
     useStateContext();
+
+  // payment imports
+  const handleCheckout = async () => {
+    const stripe = await getStripe();
+    const response = await fetch("/api/stripe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(cartItems),
+    });
+    const data = await response.json();
+    await stripe.redirectToCheckout({ sessionId: data.id });
+  };
   return (
     <CartWrapper
       initial={{ opacity: 0 }}
@@ -43,8 +57,7 @@ export default function Cart() {
                 >
                   <img
                     src={
-                      item.attributes.image.data.attributes.formats.thumbnail
-                        .url
+                      item.attributes.image.data.attributes.formats.small.url
                     }
                     alt={item.title}
                   />
@@ -75,7 +88,13 @@ export default function Cart() {
           {cartItems.length >= 1 && (
             <Checkout layout>
               <h3>Subtotal:{totalPrice}</h3>
-              <button>Purchase</button>
+              <button
+                onClick={() => {
+                  handleCheckout();
+                }}
+              >
+                Purchase
+              </button>
             </Checkout>
           )}
         </motion.div>
@@ -100,6 +119,10 @@ const CartStyle = styled(motion.div)`
   padding: 2rem 5rem;
   overflow-y: scroll;
   position: relative;
+  @media screen and (max-width: 768px) {
+    width: 60%;
+    padding: 1rem 1rem;
+  }
 `;
 const Card = styled(motion.div)`
   display: flex;
@@ -108,10 +131,18 @@ const Card = styled(motion.div)`
   border-radius: 1rem;
   overflow: hidden;
   background: white;
-  padding: 2rem 1rem;
-  margin: 2rem 0rem;
+  padding: 1rem 1rem;
+  margin: 1rem 0rem;
   img {
     width: 8rem;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 1rem 1rem;
+    margin: 1rem 0rem;
+    flex-direction: column;
+    img {
+      width: 100%;
+    }
   }
 `;
 const CardInfo = styled(motion.div)`
@@ -119,6 +150,10 @@ const CardInfo = styled(motion.div)`
   div {
     display: flex;
     flex-direction: space-between;
+  }
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+    width: 100%;
   }
 `;
 const EmptyStyle = styled(motion.div)`
