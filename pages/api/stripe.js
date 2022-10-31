@@ -16,19 +16,24 @@ export default async function handler(req, res) {
           return {
             price_data: {
               currency: "inr",
+
               product_data: {
                 name: item.attributes.title,
                 images: [
                   item.attributes.image.data.attributes.formats.small.url,
                 ],
               },
+              // adjustable_quantity: {
+              //   enabled: true,
+              //   quantity: 1,
+              // },
               unit_amount: item.attributes.price * 100,
             },
             quantity: item.quantity,
           };
         }),
         //success or fail page
-        success_url: `${req.headers.origin}/success`,
+        success_url: `${req.headers.origin}/success?&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/canceled`,
       });
       res.status(200).json(session);
