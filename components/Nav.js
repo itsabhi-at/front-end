@@ -4,13 +4,20 @@ import { FiShoppingBag } from "react-icons/fi";
 import styled from "styled-components";
 import Cart from "./Cart";
 import { useStateContext } from "../lib/context";
+import User from "../components/User";
+import { useUser } from "@auth0/nextjs-auth0";
+
 const { AnimatePresence, motion } = require("framer-motion");
+
 function Nav() {
   const { showCart, setShowCart, qty, totalQuantities } = useStateContext();
+  const { user, error, isLoading } = useUser();
+
   return (
     <NavStyles>
       <Link href={"/"}>Styled.</Link>
       <NavItems>
+        <User />
         <div onClick={() => setShowCart(true)}>
           {totalQuantities > 0 && (
             <motion.span animate={{ scale: 1 }} initial={{ scale: 0 }}>
@@ -43,6 +50,7 @@ const NavItems = styled.div`
   justify-content: space-around;
   align-items: center;
   position: relative;
+  cursor: pointer;
   div {
     margin-left: 3rem;
     position: relative;
