@@ -41,6 +41,7 @@ const NavStyles = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 1rem;
+  margin-bottom: 2rem;
   a {
     font-family: 1.2rem;
   }
