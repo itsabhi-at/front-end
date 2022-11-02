@@ -3,7 +3,7 @@ import { FaUserCircle, faUserCircle } from "react-icons/fa";
 import styled from "styled-components";
 import { useUser } from "@auth0/nextjs-auth0";
 
-function user() {
+function User() {
   const route = useRouter();
   const { user, error, isLoading } = useUser();
   if (!user) {
@@ -30,7 +30,7 @@ function user() {
   );
 }
 
-export default user;
+export default User;
 
 const Profile = styled.div`
   cursor: pointer;
