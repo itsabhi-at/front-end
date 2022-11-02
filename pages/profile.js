@@ -4,6 +4,7 @@ const stripe = require("stripe")(
 import { withPageAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import styled from "styled-components";
+import FormatMoney from "../components/FormatMoney";
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps(ctx) {
     const session = await getSession(ctx.req, ctx.res);
@@ -36,9 +37,9 @@ function profile({ user, orders }) {
         <div>
           {orders.map((order) => {
             return (
-              <Order>
+              <Order key={order.id}>
                 <h2>Order Number: {order.id}</h2>
-                <h2>Amount: {order.amount / 100}</h2>
+                <h2>Amount: {FormatMoney(order.amount)}</h2>
                 <h2>Receipt Email: {order.receipt_email}</h2>
               </Order>
             );

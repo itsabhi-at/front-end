@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
+import FormatMoney from "../components/FormatMoney";
 const { motion } = require("framer-motion");
 const stripe = require("stripe")(
   `${process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY}`
@@ -49,7 +50,7 @@ function success({ order }) {
                   <div key={key}>
                     <p>Product Name : {val.description}</p>
                     <p>Quantity : {val.quantity}</p>
-                    <p>Amount Paid : {val.amount_total / 100}</p>
+                    <p>Amount Paid : {FormatMoney(val.amount_total)}</p>
                   </div>
                 );
               })}

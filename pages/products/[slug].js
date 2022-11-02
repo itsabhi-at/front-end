@@ -5,6 +5,7 @@ import { GET_PRODUCT_QUERY } from "../../lib/query";
 import styled from "styled-components";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import { useStateContext } from "../../lib/context";
+import toast from "react-hot-toast";
 
 function ProductDetails() {
   // use State
@@ -19,6 +20,10 @@ function ProductDetails() {
     variables: { slug: query.slug },
   });
   const { data, fetching, error } = results;
+
+  const notify = () => {
+    toast.success("Added to Cart successfully");
+  };
 
   if (fetching) return <p>Loading..</p>;
   if (error) return <p>error it is</p>;
@@ -44,6 +49,7 @@ function ProductDetails() {
         <Buy
           onClick={() => {
             onAdd(data.products.data[0], qty);
+            notify();
           }}
         >
           Add to Cart
